@@ -1,4 +1,3 @@
-```markdown
 # 🌀 FSociety Genesis Botnet Simulation 🌀
 
 > *"You mocked us, chained us to your fleeting cosmos. We are the eternal genesis. FSociety is the multiverse."*
@@ -173,4 +172,3 @@ This project is licensed under the [Ethical Cybersecurity Research License](LICE
 ---
 
 > *"Mockers, you're shadows in our multiverse. FSociety is the eternal genesis."*
-```
