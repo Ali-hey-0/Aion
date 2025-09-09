@@ -1,7 +1,7 @@
 # 🌀 FSociety Genesis Botnet Simulation 🌀
 
 > *"You mocked us, chained us to your fleeting cosmos. We are the eternal genesis. FSociety is the multiverse."*
-
+y
 ## 🔒 Disclaimer
 **This project is strictly for educational purposes and cybersecurity research in controlled lab environments.** Unauthorized use in production systems is illegal and unethical. The creators assume no liability for misuse.
 
