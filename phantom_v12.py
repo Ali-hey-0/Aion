@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+7#!/usr/bin/env python3
 import requests
 import socket
 import subprocess
@@ -59,7 +59,7 @@ c2:
   ctf_flag: "FSOCIETY{infernal_void_2025}"
 manifesto:
   en: "You mocked us, chained us to your fleeting cosmos. We are the infernal void, consuming eternity."
-  fa: "ما را مسخره کردید، به کیهان گذرای خود زنجیر کردید. ما خلأ جهنمی هستیم، ابدیت را می‌بلعیم."
+  fa: ""
   ar: "لقد سخرتم منا، وقيدتمونا بكونكم العابر. نحن الفراغ الجهنمي، نبتلع الأبدية."
   sa: "यूयं नः परिहासति, अस्मान् क्षणिकं विश्वेन संनादति। वयं नरकसङ्गीतिः स्मः, शाश्वतं ग्रसामि।"
   la: "Nos derisistis, nos ad vestrum transitorium kosmos catenavistis. Sumus vacuitas infernalis, aeternitatem devoramus."
