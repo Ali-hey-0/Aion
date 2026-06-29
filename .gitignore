@@ -1,0 +1,94 @@
+# Dependencies
+node_modules/
+
+# Frontend build output
+dist/
+dist-ssr/
+.vite/
+node_modules/.vite/
+node_modules/.vite-aion/
+
+# Rust / Tauri build output
+target/
+src-tauri/target/
+src-tauri/gen/
+src-tauri/bundle/
+src-tauri/.cargo/
+
+# Native debug and generated binaries
+*.pdb
+*.rlib
+*.rmeta
+*.dll
+*.dylib
+*.so
+*.exe
+*.msi
+*.msix
+*.appx
+*.appxbundle
+
+# Logs and diagnostics
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+
+# Local caches and temp files
+.cache/
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Coverage and test artifacts
+coverage/
+.nyc_output/
+lcov.info
+
+# Package manager caches
+.npm/
+.pnpm-store/
+.yarn/
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.code-workspace
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# User-specific data
+CodexProfiles/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Forensics / local investigations
+forensics/**/*.etl
+forensics/**/*.evtx
+forensics/**/*.pcap
+forensics/**/*.zip
+
+# Tauri local config
+src-tauri/.tauri/

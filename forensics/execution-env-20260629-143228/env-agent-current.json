@@ -1,0 +1,382 @@
+﻿[
+    {
+        "Name":  "__PSLockDownPolicy",
+        "Value":  "0"
+    },
+    {
+        "Name":  "_CONDA_EXE",
+        "Value":  "C:\\Users\\WebVajhegan\\anaconda3\\Scripts\\conda.exe"
+    },
+    {
+        "Name":  "_CONDA_ROOT",
+        "Value":  "C:\\Users\\WebVajhegan\\anaconda3"
+    },
+    {
+        "Name":  "ADVINST_COM",
+        "Value":  "\"C:\\Program Files (x86)\\Caphyon\\Advanced Installer 23.7\\bin\\x86\\AdvancedInstaller.com\""
+    },
+    {
+        "Name":  "ALLUSERSPROFILE",
+        "Value":  "C:\\ProgramData"
+    },
+    {
+        "Name":  "ANSYS242_DIR",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242\\ANSYS"
+    },
+    {
+        "Name":  "ANSYSLIC_DIR",
+        "Value":  "G:\\others\\Fluent\\Shared Files\\Licensing"
+    },
+    {
+        "Name":  "ANSYSLMD_LICENSE_FILE",
+        "Value":  "1055@localhost"
+    },
+    {
+        "Name":  "APPCODE_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\appcode.vmoptions"
+    },
+    {
+        "Name":  "APPDATA",
+        "Value":  "C:\\Users\\WebVajhegan\\AppData\\Roaming"
+    },
+    {
+        "Name":  "AWP_ROOT242",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242"
+    },
+    {
+        "Name":  "CADOE_LIBDIR242",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242\\CommonFiles\\Language\\en-us"
+    },
+    {
+        "Name":  "CARGO_HOME",
+        "Value":  "G:\\others\\.cargo"
+    },
+    {
+        "Name":  "CARGO_TARGET_DIR",
+        "Value":  "G:\\others\\Rust_Global_Targets"
+    },
+    {
+        "Name":  "ChocolateyInstall",
+        "Value":  "C:\\ProgramData\\chocolatey"
+    },
+    {
+        "Name":  "ChocolateyLastPathUpdate",
+        "Value":  "133660283007054360"
+    },
+    {
+        "Name":  "CLION_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\clion.vmoptions"
+    },
+    {
+        "Name":  "CODEX_INTERNAL_ORIGINATOR_OVERRIDE",
+        "Value":  "Codex Desktop"
+    },
+    {
+        "Name":  "CODEX_THREAD_ID",
+        "Value":  "019f08e0-4fcc-7821-95c1-dcfc3e12ecb0"
+    },
+    {
+        "Name":  "CommonProgramFiles",
+        "Value":  "C:\\Program Files\\Common Files"
+    },
+    {
+        "Name":  "CommonProgramFiles(x86)",
+        "Value":  "C:\\Program Files (x86)\\Common Files"
+    },
+    {
+        "Name":  "CommonProgramW6432",
+        "Value":  "C:\\Program Files\\Common Files"
+    },
+    {
+        "Name":  "COMPUTERNAME",
+        "Value":  "ALI"
+    },
+    {
+        "Name":  "ComSpec",
+        "Value":  "C:\\Windows\\system32\\cmd.exe"
+    },
+    {
+        "Name":  "CONDA_DEFAULT_ENV",
+        "Value":  "base"
+    },
+    {
+        "Name":  "CONDA_EXE",
+        "Value":  "C:\\Users\\WebVajhegan\\anaconda3\\Scripts\\conda.exe"
+    },
+    {
+        "Name":  "CONDA_PREFIX",
+        "Value":  "C:\\Users\\WebVajhegan\\anaconda3"
+    },
+    {
+        "Name":  "CONDA_PROMPT_MODIFIER",
+        "Value":  "(base) "
+    },
+    {
+        "Name":  "CONDA_PYTHON_EXE",
+        "Value":  "C:\\Users\\WebVajhegan\\anaconda3\\python.exe"
+    },
+    {
+        "Name":  "CONDA_SHLVL",
+        "Value":  "1"
+    },
+    {
+        "Name":  "DATAGRIP_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\datagrip.vmoptions"
+    },
+    {
+        "Name":  "DATASPELL_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\dataspell.vmoptions"
+    },
+    {
+        "Name":  "DEVECOSTUDIO_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\devecostudio.vmoptions"
+    },
+    {
+        "Name":  "DriverData",
+        "Value":  "C:\\Windows\\System32\\Drivers\\DriverData"
+    },
+    {
+        "Name":  "GATEWAY_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\gateway.vmoptions"
+    },
+    {
+        "Name":  "GIT_LFS_PATH",
+        "Value":  "C:\\Program Files\\Git LFS"
+    },
+    {
+        "Name":  "GOLAND_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\goland.vmoptions"
+    },
+    {
+        "Name":  "GOOGLE_CLOUD_PROJECT",
+        "Value":  "gemini-cli-dev3"
+    },
+    {
+        "Name":  "HOMEDRIVE",
+        "Value":  "C:"
+    },
+    {
+        "Name":  "HOMEPATH",
+        "Value":  "\\Users\\WebVajhegan"
+    },
+    {
+        "Name":  "ICEMCFD_ROOT242",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242\\icemcfd"
+    },
+    {
+        "Name":  "ICEMCFD_SYSDIR",
+        "Value":  "win64_amd"
+    },
+    {
+        "Name":  "IDEA_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\idea.vmoptions"
+    },
+    {
+        "Name":  "JAVA_HOME",
+        "Value":  "C:\\Program Files\\Eclipse Adoptium\\jdk-11.0.29.7-hotspot"
+    },
+    {
+        "Name":  "JETBRAINS_CLIENT_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\jetbrains_client.vmoptions"
+    },
+    {
+        "Name":  "JETBRAINSCLIENT_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\jetbrainsclient.vmoptions"
+    },
+    {
+        "Name":  "LOCALAPPDATA",
+        "Value":  "C:\\Users\\WebVajhegan\\AppData\\Local"
+    },
+    {
+        "Name":  "LOG_FORMAT",
+        "Value":  "json"
+    },
+    {
+        "Name":  "LOGONSERVER",
+        "Value":  "\\\\ALI"
+    },
+    {
+        "Name":  "LSTC_LICENSE",
+        "Value":  "Ansys"
+    },
+    {
+        "Name":  "MSMPI_BENCHMARKS",
+        "Value":  "C:\\Program Files\\Microsoft MPI\\Benchmarks\\"
+    },
+    {
+        "Name":  "MSMPI_BIN",
+        "Value":  "C:\\Program Files\\Microsoft MPI\\Bin\\"
+    },
+    {
+        "Name":  "NUGET_PACKAGES",
+        "Value":  "G:\\others\\Nuget_Cache"
+    },
+    {
+        "Name":  "NUMBER_OF_PROCESSORS",
+        "Value":  "8"
+    },
+    {
+        "Name":  "OneDrive",
+        "Value":  "C:\\Users\\WebVajhegan\\OneDrive"
+    },
+    {
+        "Name":  "OS",
+        "Value":  "Windows_NT"
+    },
+    {
+        "Name":  "P_SCHEMA",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242\\AISOL\\CADIntegration\\Parasolid\\PSchema"
+    },
+    {
+        "Name":  "Path",
+        "Value":  "C:\\Users\\WebVajhegan\\anaconda3;C:\\Users\\WebVajhegan\\anaconda3\\Library\\mingw-w64\\bin;C:\\Users\\WebVajhegan\\anaconda3\\Library\\usr\\bin;C:\\Users\\WebVajhegan\\anaconda3\\Library\\bin;C:\\Users\\WebVajhegan\\anaconda3\\Scripts;C:\\Users\\WebVajhegan\\anaconda3\\bin;C:\\Users\\WebVajhegan\\anaconda3\\condabin;C:\\Users\\WebVajhegan\\.codex\\tmp\\arg0\\codex-arg0WxY7u8;c:\\Users\\WebVajhegan\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin;C:\\Program Files\\usbipd-win;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0;C:\\Windows\\System32\\OpenSSH;C:\\Program Files\\dotnet;C:\\Program Files\\Wolfram Research\\WolframScript;C:\\xampp\\php;C:\\composer;C:\\Program Files\\nodejs;C:\\ProgramData\\chocolatey\\bin;C:\\xampp\\htdocs;C:\\xampp\\php;G:\\others\\programs\\zz_v2rayN-With-Core-SelfContained;C:\\Program Files\\usbipd-win;C:\\platform-tools;C:\\Program Files\\flutter\\bin;C:\\mongoDB\\bin;G:\\others\\VM\\kali;C:\\Program Files\\Oracle\\VirtualBox;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Users\\WebVajhegan\\AppData\\Local\\Programs\\Python;C:\\Program Files\\Cloudflare\\Cloudf;C:\\flutter\\bin;C:\\Android\\sdk\\tools;C:\\Android\\sdk\\tools\\bin;C:\\flutter;G:\\others\\programs\\Burp.Suite.Professional.2024.5.5;G:\\oth;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Docker\\Docker\\resources\\bin;GEMINI_API_KEY;C:\\msys64\\mingw64\\bin;C:\\Program Files\\Cloudflare\\Cloudflare WARP;G:\\others\\.cargo\\bin;C:\\Users\\WebVajhegan\\.local\\bin;C:\\Users\\WebVajhegan\\.cargo\\bin;c:\\Users\\WebVajhegan\\AppData\\Local\\cursor\\resources\\app\\codeBin;C:\\Program Files\\Eclipse Adoptium\\jdk-11.0.29.7-hotspot\\bin;C:\\Program Files\\Eclipse Adoptium\\jdk-11.0.29.7-hotspot\\bin;C:\\Program Files\\Common Files\\Oracle\\Java\\javapath;C:\\Program Files\\M;C:\\Users\\WebVajhegan\\.dotnet\\tools;C:\\Users\\WebVajhegan\\AppData\\Local\\OpenAI\\Codex\\bin\\ada252862d154cdd;C:\\Program Files\\WindowsApps\\OpenAI.Codex_26.623.8305.0_x64__2p2nqsd0c76g0\\app\\resources"
+    },
+    {
+        "Name":  "PATHEXT",
+        "Value":  ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL"
+    },
+    {
+        "Name":  "PhpStorm",
+        "Value":  "C:\\Program Files\\JetBrains\\PhpStorm 2024.1.4\\bin;"
+    },
+    {
+        "Name":  "PHPSTORM_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\phpstorm.vmoptions"
+    },
+    {
+        "Name":  "PROCESSOR_ARCHITECTURE",
+        "Value":  "AMD64"
+    },
+    {
+        "Name":  "PROCESSOR_IDENTIFIER",
+        "Value":  "Intel64 Family 6 Model 60 Stepping 3, GenuineIntel"
+    },
+    {
+        "Name":  "PROCESSOR_LEVEL",
+        "Value":  "6"
+    },
+    {
+        "Name":  "PROCESSOR_REVISION",
+        "Value":  "3c03"
+    },
+    {
+        "Name":  "ProgramData",
+        "Value":  "C:\\ProgramData"
+    },
+    {
+        "Name":  "ProgramFiles",
+        "Value":  "C:\\Program Files"
+    },
+    {
+        "Name":  "ProgramFiles(x86)",
+        "Value":  "C:\\Program Files (x86)"
+    },
+    {
+        "Name":  "ProgramW6432",
+        "Value":  "C:\\Program Files"
+    },
+    {
+        "Name":  "PSModulePath",
+        "Value":  "C:\\Users\\WebVajhegan\\Documents\\WindowsPowerShell\\Modules;C:\\Program Files\\WindowsPowerShell\\Modules;C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules"
+    },
+    {
+        "Name":  "PUBLIC",
+        "Value":  "C:\\Users\\Public"
+    },
+    {
+        "Name":  "PyCharm",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\bin;"
+    },
+    {
+        "Name":  "PYCHARM_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\pycharm.vmoptions"
+    },
+    {
+        "Name":  "RIDER_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\rider.vmoptions"
+    },
+    {
+        "Name":  "RUBYMINE_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\rubymine.vmoptions"
+    },
+    {
+        "Name":  "RUST_LOG",
+        "Value":  "warn"
+    },
+    {
+        "Name":  "RUSTROVER_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\RustRover.vmoptions"
+    },
+    {
+        "Name":  "RUSTUP_HOME",
+        "Value":  "G:\\others\\.rustup"
+    },
+    {
+        "Name":  "saxa",
+        "Value":  "C:\\Program Files\\PostgreSQL\\17\\bin\\postgres.exe"
+    },
+    {
+        "Name":  "SoS_debug_exe",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242\\optiSLang\\sos\\sos_console.exe"
+    },
+    {
+        "Name":  "SoS_exe",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242\\optiSLang\\sos\\sos.exe"
+    },
+    {
+        "Name":  "SoS_install_dir",
+        "Value":  "G:\\others\\Fluent\\ANSYS Inc\\v242\\optiSLang\\sos"
+    },
+    {
+        "Name":  "STUDIO_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\studio.vmoptions"
+    },
+    {
+        "Name":  "SystemDrive",
+        "Value":  "C:"
+    },
+    {
+        "Name":  "SystemRoot",
+        "Value":  "C:\\Windows"
+    },
+    {
+        "Name":  "TEMP",
+        "Value":  "C:\\Users\\WEBVAJ~1\\AppData\\Local\\Temp"
+    },
+    {
+        "Name":  "TMP",
+        "Value":  "C:\\Users\\WEBVAJ~1\\AppData\\Local\\Temp"
+    },
+    {
+        "Name":  "USERDOMAIN",
+        "Value":  "ALI"
+    },
+    {
+        "Name":  "USERDOMAIN_ROAMINGPROFILE",
+        "Value":  "ALI"
+    },
+    {
+        "Name":  "USERNAME",
+        "Value":  "WebVajhegan"
+    },
+    {
+        "Name":  "USERPROFILE",
+        "Value":  "C:\\Users\\WebVajhegan"
+    },
+    {
+        "Name":  "VBOX_MSI_INSTALL_PATH",
+        "Value":  "C:\\Program Files\\Oracle\\VirtualBox\\"
+    },
+    {
+        "Name":  "WEBIDE_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\webide.vmoptions"
+    },
+    {
+        "Name":  "WEBSTORM_VM_OPTIONS",
+        "Value":  "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\ja-netfilter\\vmoptions\\webstorm.vmoptions"
+    },
+    {
+        "Name":  "windir",
+        "Value":  "C:\\Windows"
+    }
+]

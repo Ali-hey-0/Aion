@@ -1,0 +1,22 @@
+﻿[
+    {
+        "Path":  "G:\\others\\Aion-Codex\\src-tauri\\target\\debug\\aion.exe",
+        "Size":  13419520,
+        "LastWriteTime":  "2026-06-29T11:22:34.5505732+03:30",
+        "Sha256":  "C9356544661EB930BE5DEDC2A10029832FE56F1000D045245C571D9A64779E7F"
+    },
+    {
+        "Path":  "C:\\Users\\WebVajhegan\\Desktop\\vs code\\Aion\\src-tauri\\target\\debug\\aion.exe",
+        "Size":  13419520,
+        "LastWriteTime":  "2026-06-29T11:22:34.5505732+03:30",
+        "Sha256":  "C9356544661EB930BE5DEDC2A10029832FE56F1000D045245C571D9A64779E7F"
+    },
+    {
+        "Path":  "G:\\others\\Aion-Codex\\src-tauri\\target\\release\\aion.exe",
+        "Missing":  true
+    },
+    {
+        "Path":  "C:\\Users\\WebVajhegan\\Desktop\\vs code\\Aion\\src-tauri\\target\\release\\aion.exe",
+        "Missing":  true
+    }
+]
